@@ -4,6 +4,34 @@
  */
 package threads;
 
+import so.impl.SOUpdateStaffMember;
+import so.impl.SOGetAllPlayers;
+import so.impl.SOAddHall;
+import so.impl.SOLogin;
+import so.impl.SOGetStaffMemberEngagements;
+import so.impl.SOAddTeam;
+import so.impl.SOGetStaffMemberEngagementsOfTeam;
+import so.impl.SOUpdatePlayer;
+import so.impl.SOSearchTeams;
+import so.impl.SOAddPlayer;
+import so.impl.SOGetPlayerEngagementsOfTeam;
+import so.impl.SOGetAllCountries;
+import so.impl.SOGetPlayerEngagements;
+import so.impl.SOGetAllSeasons;
+import so.impl.SODeleteStaffMember;
+import so.impl.SOAddPlayerEngagement;
+import so.impl.SOUpdateTeam;
+import so.impl.SODeleteStaffMemberEngagement;
+import so.impl.SOSearchHalls;
+import so.impl.SODeletePlayerEngagement;
+import so.impl.SOAddStaffMemberEngagement;
+import so.impl.SOAddStaffMember;
+import so.impl.SOGetAllTeams;
+import so.impl.SODeletePlayer;
+import so.impl.SOGetAllHalls;
+import so.impl.SOSearchStaffMembers;
+import so.impl.SOSearchPlayers;
+import so.impl.SOGetAllStaffMembers;
 import enumeration.Operation;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,6 +42,7 @@ import java.util.logging.Logger;
 import server.Server;
 import so.*;
 import transfer.Request;
+import transfer.Response;
 
 /**
  *
@@ -37,97 +66,104 @@ public class ClientThread extends Thread {
         while (status) {
             try {
                 Request request = (Request) in.readObject();
-                Operation so = request.getOperation();
-                switch (so) {
+                Operation operation = request.getOperation();
+                SOInterface so = null;
+                switch (operation) {
                     case LOGIN:
-                        new SOLogin(out).execute(request.getObject());
+                        so = new SOLogin();
                         break;
                     case GET_ALL_COUNTRIES:
-                        new SOGetAllCountries(out).execute(request.getObject());
+                        so = new SOGetAllCountries();
                         break;
                     case ADD_PLAYER:
-                        new SOAddPlayer(out).execute(request.getObject());
+                        so = new SOAddPlayer();
                         break;
                     case ADD_TEAM:
-                        new SOAddTeam(out).execute(request.getObject());
+                        so = new SOAddTeam();
                         break;
                     case SEARCH_HALLS:
-                        new SOSearchHalls(out).execute(request.getObject());
+                        so = new SOSearchHalls();
                         break;
                     case SEARCH_PLAYERS:
-                        new SOSearchPlayers(out).execute(request.getObject());
+                        so = new SOSearchPlayers();
                         break;
                     case UPDATE_PLAYER:
-                        new SOUpdatePlayer(out).execute(request.getObject());
+                        so = new SOUpdatePlayer();
                         break;
                     case ADD_HALL:
-                        new SOAddHall(out).execute(request.getObject());
+                        so = new SOAddHall();
                         break;
                     case SEARCH_TEAMS:
-                        new SOSearchTeams(out).execute(request.getObject());
+                        so = new SOSearchTeams();
                         break;
                     case GET_ALL_PLAYERS:
-                        new SOGetAllPlayers(out).execute(request.getObject());
+                        so = new SOGetAllPlayers();
                         break;
                     case GET_ALL_TEAMS:
-                        new SOGetAllTeams(out).execute(request.getObject());
+                        so = new SOGetAllTeams();
                         break;
                     case ADD_PLAYER_ENGAGEMENT:
-                        new SOAddPlayerEngagement(out).execute(request.getObject());
+                        so = new SOAddPlayerEngagement();
                         break;
                     case GET_ALL_SEASONS:
-                        new SOGetAllSeasons(out).execute(request.getObject());
+                        so = new SOGetAllSeasons();
                         break;
                     case GET_PLAYER_ENGAGEMENTS:
-                        new SOGetPlayerEngagements(out).execute(request.getObject());
+                        so = new SOGetPlayerEngagements();
                         break;
                     case DELETE_PLAYER_ENGAGEMENT:
-                        new SODeletePlayerEngagement(out).execute(request.getObject());
+                        so = new SODeletePlayerEngagement();
                         break;
                     case GET_PLAYER_ENGAGEMENTS_OF_TEAM:
-                        new SOGetPlayerEngagementsOfTeam(out).execute(request.getObject());
+                        so = new SOGetPlayerEngagementsOfTeam();
                         break;
                     case ADD_STAFF_MEMBER:
-                        new SOAddStaffMember(out).execute(request.getObject());
+                        so = new SOAddStaffMember();
                         break;
                     case UPDATE_STAFF_MEMBER:
-                        new SOUpdateStaffMember(out).execute(request.getObject());
+                        so = new SOUpdateStaffMember();
                         break;
                     case DELETE_STAFF_MEMBER_ENGAGEMENT:
-                        new SODeleteStaffMemberEngagement(out).execute(request.getObject());
+                        so = new SODeleteStaffMemberEngagement();
                         break;
                     case GET_STAFF_MEMBER_ENGAGEMENTS:
-                        new SOGetStaffMemberEngagements(out).execute(request.getObject());
+                        so = new SOGetStaffMemberEngagements();
                         break;
                     case ADD_STAFF_MEMBER_ENGAGEMENT:
-                        new SOAddStaffMemberEngagement(out).execute(request.getObject());
+                        so = new SOAddStaffMemberEngagement();
                         break;
                     case GET_ALL_STAFF_MEMBERS:
-                        new SOGetAllStaffMembers(out).execute(request.getObject());
+                        so = new SOGetAllStaffMembers();
                         break;
                     case SEARCH_STAFF_MEMBERS:
-                        new SOSearchStaffMembers(out).execute(request.getObject());
+                        so = new SOSearchStaffMembers();
                         break;
                     case GET_STAFF_MEMBER_ENGAGEMENTS_OF_TEAM:
-                        new SOGetStaffMemberEngagementsOfTeam(out).execute(request.getObject());
+                        so = new SOGetStaffMemberEngagementsOfTeam();
                         break;
                     case GET_ALL_HALLS:
-                        new SOGetAllHalls(out).execute(request.getObject());
+                        so = new SOGetAllHalls();
                         break;
                     case DELETE_PLAYER:
-                        new SODeletePlayer(out).execute(request.getObject());
+                        so = new SODeletePlayer();
                         break;
                     case DELETE_STAFF_MEMBER:
-                        new SODeleteStaffMember(out).execute(request.getObject());
+                        so = new SODeleteStaffMember();
                         break;
                     case UPDATE_TEAM:
-                        new SOUpdateTeam(out).execute(request.getObject());
+                        so = new SOUpdateTeam();
                         break;
                     case QUIT:
+                        status = false;
                         terminate();
                         break;
                 }
+                if(status){
+                    Response response = so.execute(request.getObject());
+                    out.writeObject(response);
+                }
             } catch (IOException ex) {
+                status = false;
                 terminate();
                 interrupt();
                 Server.removeClient(this);
@@ -139,10 +175,10 @@ public class ClientThread extends Thread {
 
     public void terminate() {
         try {
-            status = false;
             in.close();
             out.close();
             socket.close();
+            Server.removeClient(this);
         } catch (IOException ex) {
             Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
         }
