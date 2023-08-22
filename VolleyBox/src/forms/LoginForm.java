@@ -11,7 +11,9 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import session.Session;
 
 /**
  *
@@ -109,10 +111,10 @@ public class LoginForm extends javax.swing.JFrame {
         boolean loginSuccess = Communication.getInstance().login(username, password);
 
         if (loginSuccess) {
+            Session.getInstance().setAdmin(new Admin(username, password));
             new HomeForm().setVisible(true);
             this.dispose();
         } else {
-            lblLogin.setText("Incorect username or password");
             txtUsername.setText(null);
             passPassword.setText(null);
         }

@@ -71,6 +71,7 @@ public class TeamInfoForm extends javax.swing.JDialog {
         btnAddPlayerEngagement = new javax.swing.JButton();
         btnDeleteStaffEngagement = new javax.swing.JButton();
         btnAddStaffEngagement = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -168,6 +169,13 @@ public class TeamInfoForm extends javax.swing.JDialog {
             }
         });
 
+        btnDelete.setText("Delete team");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -190,7 +198,10 @@ public class TeamInfoForm extends javax.swing.JDialog {
                                     .addComponent(comboCountry, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jButton1)
                                     .addComponent(lblHall, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(jButton2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDelete)))
                         .addGap(97, 97, 97)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -241,7 +252,9 @@ public class TeamInfoForm extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(24, 24, 24)
-                                .addComponent(jButton2))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jButton2)
+                                    .addComponent(btnDelete)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnAddPlayerEngagement)
@@ -316,6 +329,11 @@ public class TeamInfoForm extends javax.swing.JDialog {
         setm.showSeason(seasons.get(comboSeason.getSelectedIndex()));
     }//GEN-LAST:event_btnDeleteStaffEngagementActionPerformed
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        Communication.getInstance().deleteTeam(team);
+        dispose();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -324,6 +342,7 @@ public class TeamInfoForm extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddPlayerEngagement;
     private javax.swing.JButton btnAddStaffEngagement;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnDeletePlayerEngagement;
     private javax.swing.JButton btnDeleteStaffEngagement;
     private javax.swing.JComboBox<String> comboCountry;

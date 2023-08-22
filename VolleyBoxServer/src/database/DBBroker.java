@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 public class DBBroker {
 
     private static DBBroker instance;
+    private List<Admin> loggedAdmins = new ArrayList<>();
 
     public static DBBroker getInstance() {
         if (instance == null) {
@@ -83,8 +84,11 @@ public class DBBroker {
         }
     }
 
-    public boolean login(Admin admin) throws SQLException {
-        boolean success = false;
+    public String login(Admin admin) throws SQLException {
+        if(loggedAdmins.contains(admin)){
+            return "Admin allready logged";
+        }
+        String message = null;
         String username = admin.getUsername();
         String password = admin.getPassword();
         String query = "select * from admin where username = ? and password = ?";
@@ -96,7 +100,10 @@ public class DBBroker {
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                success = true;
+                message = "Correct credentials";
+                loggedAdmins.add(admin);
+            } else {
+                message = "Invalid username or password";
             }
 
             connection.commit();
@@ -110,7 +117,7 @@ public class DBBroker {
             }
             connection.close();
         }
-        return success;
+        return message;
     }
 
     public void addPlayer(Player player) throws SQLException {
@@ -833,6 +840,28 @@ public class DBBroker {
         }
         return engagements;
     }
+    
+    public void deleteTeam(Team team) throws SQLException  {
+        String query = "delete from team where teamId = ?";
+        Connection connection = DBConnectionFactory.getInstance().getConnection();
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, team.getTeamId());
+            ps.executeUpdate();
+            
+            connection.commit();
+            ps.close();
+            connection.close();
+        } catch (SQLException ex) {
+            connection.rollback();
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            connection.close();
+        }
+    }
 
     public void deletePlayerEngagement(PlayerEngagement engagement) throws SQLException {
         String query = "delete from playerEngagement where playerId = ? and teamId = ? and rosterId = ?";
@@ -1006,4 +1035,9 @@ public class DBBroker {
         return halls;
     }
 
+    public boolean logout(Admin admin) {
+        loggedAdmins.remove(admin);
+        return true;
+    }
+    
 }

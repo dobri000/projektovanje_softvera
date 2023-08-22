@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import session.Session;
 import transfer.Request;
 import transfer.Response;
 
@@ -83,89 +84,114 @@ public class Communication {
     }
 
     public boolean login(String username, String password) {
-        boolean success = false;
         Admin admin = new Admin(username, password);
         sendRequest(Operation.LOGIN, admin);
         Response response = getResponse();
-        success = (boolean) response.getObject();
-        return success;
+        if(response.getServerResponse().equals(ServerResponse.ERROR))
+            return false;
+        return true;
     }
 
     public void deletePlayer(Player player) {
         sendRequest(Operation.DELETE_PLAYER, player);
         Response response = getResponse();
-        JOptionPane.showMessageDialog(null, "Player successfully deleted");
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            JOptionPane.showMessageDialog(null, "Player successfully deleted");
+    }
+    
+    public void deleteTeam(Team team) {
+        sendRequest(Operation.DELETE_TEAM, team);
+        Response response = getResponse();
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            JOptionPane.showMessageDialog(null, "Team successfully deleted");
     }
 
     public void deleteStaffMember(StaffMember staff) {
         sendRequest(Operation.DELETE_STAFF_MEMBER, staff);
         Response response = getResponse();
-        JOptionPane.showMessageDialog(null, "Staff member successfully deleted");
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            JOptionPane.showMessageDialog(null, "Staff member successfully deleted");
     }
 
     public List<Country> getAllCountries() {
         sendRequest(Operation.GET_ALL_COUNTRIES, null);
         Response response = getResponse();
-        return (List<Country>) response.getObject();
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            return (List<Country>) response.getObject();
+        return new ArrayList<>();
     }
 
     public void addPlayer(Player player) {
         sendRequest(Operation.ADD_PLAYER, player);
         Response response = getResponse();
-        JOptionPane.showMessageDialog(null, "Player successfully added");
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            JOptionPane.showMessageDialog(null, "Player successfully added");
     }
 
     public void addTeam(Team team) {
         sendRequest(Operation.ADD_TEAM, team);
         Response response = getResponse();
-        JOptionPane.showMessageDialog(null, "Team successfully added");
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            JOptionPane.showMessageDialog(null, "Team successfully added");
     }
 
     public List<Hall> searchHalls(String search) {
         sendRequest(Operation.SEARCH_HALLS, search);
         Response response = getResponse();
-        return (List<Hall>) response.getObject();
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            return (List<Hall>) response.getObject();
+        return new ArrayList<>();
     }
 
     public List<Player> searchPlayers(String search) {
         sendRequest(Operation.SEARCH_PLAYERS, search);
         Response response = getResponse();
-        return (List<Player>) response.getObject();
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            return (List<Player>) response.getObject();
+        return new ArrayList<>();
     }
 
     public List<StaffMember> searchStaffMembers(String search) {
         sendRequest(Operation.SEARCH_STAFF_MEMBERS, search);
         Response response = getResponse();
-        return (List<StaffMember>) response.getObject();
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            return (List<StaffMember>) response.getObject();
+        return new ArrayList<>();
     }
 
     public void updatePlayer(Player player) {
         sendRequest(Operation.UPDATE_PLAYER, player);
         Response response = getResponse();
-        JOptionPane.showMessageDialog(null, "Player successfully updated");
+        if(response.getServerResponse().equals(ServerResponse.OK));
+            JOptionPane.showMessageDialog(null, "Player successfully updated");
     }
 
     public void addHall(Hall hall) {
         sendRequest(Operation.ADD_HALL, hall);
         Response response = getResponse();
-        JOptionPane.showMessageDialog(null, "Hall successfully added");
+        if(response.getServerResponse().equals(ServerResponse.OK));
+            JOptionPane.showMessageDialog(null, "Hall successfully added");
     }
 
     public void quit() {
-        sendRequest(Operation.QUIT, null);
+        sendRequest(Operation.QUIT, Session.getInstance().getAdmin());
         closeConnection();
     }
 
     public List<Team> searchTeam(String search) {
         sendRequest(Operation.SEARCH_TEAMS, search);
         Response response = getResponse();
-        return (List<Team>) response.getObject();
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            return (List<Team>) response.getObject();
+        return new ArrayList<>();
     }
 
     public List<Team> getAllTeams() {
         sendRequest(Operation.GET_ALL_TEAMS, null);
         Response response = getResponse();
-        return (List<Team>) response.getObject();
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            return (List<Team>) response.getObject();
+        return new ArrayList<>();
     }
 
     private void closeConnection() {
@@ -186,91 +212,126 @@ public class Communication {
     public List<Player> getAllPlayers() {
         sendRequest(Operation.GET_ALL_PLAYERS, null);
         Response response = getResponse();
-        return (List<Player>) response.getObject();
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            return (List<Player>) response.getObject();
+        return new ArrayList<>();
     }
 
     public List<StaffMember> getAllStaffMembers() {
         sendRequest(Operation.GET_ALL_STAFF_MEMBERS, null);
         Response response = getResponse();
-        return (List<StaffMember>) response.getObject();
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            return (List<StaffMember>) response.getObject();
+        return new ArrayList<>();
     }
 
     public void addPlayerEngagement(PlayerEngagement playerEngagement) {
         sendRequest(Operation.ADD_PLAYER_ENGAGEMENT, playerEngagement);
         Response response = getResponse();
-        JOptionPane.showMessageDialog(null, "Player engagement successfully added");
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            JOptionPane.showMessageDialog(null, "Player engagement successfully added");
     }
 
     public void addStaffMemberEngagement(StaffMemberEngagement engagement) {
         sendRequest(Operation.ADD_STAFF_MEMBER_ENGAGEMENT, engagement);
         Response response = getResponse();
-        JOptionPane.showMessageDialog(null, "Staff member engagement successfully added");
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            JOptionPane.showMessageDialog(null, "Staff member engagement successfully added");
     }
 
     public List<Season> getAllSeasons() {
         sendRequest(Operation.GET_ALL_SEASONS, null);
         Response response = getResponse();
-        return (List<Season>) response.getObject();
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            return (List<Season>) response.getObject();
+        return new ArrayList<>();
     }
 
     public List<PlayerEngagement> getPlayerEngagements(Player player) {
         sendRequest(Operation.GET_PLAYER_ENGAGEMENTS, player);
         Response response = getResponse();
-        return (List<PlayerEngagement>) response.getObject();
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            return (List<PlayerEngagement>) response.getObject();
+        return new ArrayList<>();
     }
 
     public void deletePlayerEngagement(PlayerEngagement engagement) {
         sendRequest(Operation.DELETE_PLAYER_ENGAGEMENT, engagement);
         Response response = getResponse();
-        JOptionPane.showMessageDialog(null, "Player engagement successfully deleted");
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            JOptionPane.showMessageDialog(null, "Player engagement successfully deleted");
     }
 
     public void updateTeam(Team team) {
         sendRequest(Operation.UPDATE_TEAM, team);
         Response response = getResponse();
-        JOptionPane.showMessageDialog(null, "Team successfully updated");
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            JOptionPane.showMessageDialog(null, "Team successfully updated");
     }
 
     public List<PlayerEngagement> getPlayerEngagementsOfTeam(Team team) {
         sendRequest(Operation.GET_PLAYER_ENGAGEMENTS_OF_TEAM, team);
         Response response = getResponse();
-        return (List<PlayerEngagement>) response.getObject();
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            return (List<PlayerEngagement>) response.getObject();
+        return new ArrayList<>();
     }
 
     public List<StaffMemberEngagement> getStaffMemberEngagementsOfTeam(Team team) {
         sendRequest(Operation.GET_STAFF_MEMBER_ENGAGEMENTS_OF_TEAM, team);
         Response response = getResponse();
-        return (List<StaffMemberEngagement>) response.getObject();
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            return (List<StaffMemberEngagement>) response.getObject();
+        return new ArrayList<>();
     }
 
     public void addStaffMember(StaffMember staffMember) {
         sendRequest(Operation.ADD_STAFF_MEMBER, staffMember);
         Response response = getResponse();
-        JOptionPane.showMessageDialog(null, "Staff member successfully added");
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            JOptionPane.showMessageDialog(null, "Staff member successfully added");
     }
 
     public void updateStaffMember(StaffMember staffMember) {
         sendRequest(Operation.UPDATE_STAFF_MEMBER, staffMember);
         Response response = getResponse();
-        JOptionPane.showMessageDialog(null, "Staff member successfully updated");
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            JOptionPane.showMessageDialog(null, "Staff member successfully updated");
     }
 
     public void deleteStaffMemberEngagement(StaffMemberEngagement engagement) {
         sendRequest(Operation.DELETE_STAFF_MEMBER_ENGAGEMENT, engagement);
         Response response = getResponse();
-        JOptionPane.showMessageDialog(null, "Staff member engagement successfully deleted");
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            JOptionPane.showMessageDialog(null, "Staff member engagement successfully deleted");
     }
 
     public List<StaffMemberEngagement> getStaffMemberEngagements(StaffMember staffMember) {
         sendRequest(Operation.GET_STAFF_MEMBER_ENGAGEMENTS, staffMember);
         Response response = getResponse();
-        return (List<StaffMemberEngagement>) response.getObject();
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            return (List<StaffMemberEngagement>) response.getObject();
+        return new ArrayList<>();
     }
 
     public List<Hall> getAllHalls() {
         sendRequest(Operation.GET_ALL_HALLS, null);
         Response response = getResponse();
-        return (List<Hall>) response.getObject();
+        if(response.getServerResponse().equals(ServerResponse.OK))
+            return (List<Hall>) response.getObject();
+        return null;
+    }
+
+    public boolean logout(Admin admin) {
+        sendRequest(Operation.LOGOUT, admin);
+        Response response = getResponse();
+        if(response.getServerResponse().equals(ServerResponse.OK)){
+            JOptionPane.showMessageDialog(null, (String) response.getObject());
+            Session.getInstance().setAdmin(null);
+            return true;
+        } else {
+            return true;
+        }
     }
 
 }

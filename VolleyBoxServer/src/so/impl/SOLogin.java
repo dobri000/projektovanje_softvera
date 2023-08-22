@@ -27,8 +27,13 @@ public class SOLogin implements SOInterface {
     public Response execute(Object object) throws IOException {
         try {
             Admin admin = (Admin) object;
-            boolean success = DBBroker.getInstance().login(admin);
-            return new Response(ServerResponse.OK, success);
+            String success = DBBroker.getInstance().login(admin);
+            if(success.equals("Correct credentials")){
+                return new Response(ServerResponse.OK, success);
+            } else {
+                return new Response(ServerResponse.ERROR, success);
+            }
+            
         } catch (SQLException ex) {
             return new Response(ServerResponse.ERROR, "Cannot login");
         }

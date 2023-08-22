@@ -10,6 +10,7 @@ package enumeration;
  */
 public enum Operation {
     LOGIN,
+    LOGOUT,
     GET_ALL_COUNTRIES,
     ADD_PLAYER,
     ADD_TEAM,
@@ -37,5 +38,6 @@ public enum Operation {
     DELETE_PLAYER,
     DELETE_STAFF_MEMBER,
     UPDATE_TEAM,
+    DELETE_TEAM,
     QUIT;
 }

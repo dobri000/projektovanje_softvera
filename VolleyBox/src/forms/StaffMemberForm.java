@@ -299,7 +299,7 @@ public class StaffMemberForm extends javax.swing.JDialog {
         for(int i = 1; i <= 12; i++){
             comboMonth.addItem(i);
         }
-        for(int i = 1970; i <= 2010; i++){
+        for(int i = 1940; i <= 2010; i++){
             comboYear.addItem(i);
         }
         countries = Communication.getInstance().getAllCountries();
@@ -312,6 +312,7 @@ public class StaffMemberForm extends javax.swing.JDialog {
         jScrollPane1.setVisible(b);
         tblEngagements.setVisible(b);
         btnAddEng.setVisible(b);
+        btnDelete.setVisible(b);
         btnDeleteEng.setVisible(b);
         btnUpdateInfo.setVisible(b);
     }

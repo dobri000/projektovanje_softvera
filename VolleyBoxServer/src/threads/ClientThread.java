@@ -41,6 +41,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import server.Server;
 import so.*;
+import so.impl.SODeleteTeam;
+import so.impl.SOLogout;
+import so.impl.SOQuit;
 import transfer.Request;
 import transfer.Response;
 
@@ -80,6 +83,9 @@ public class ClientThread extends Thread {
                         break;
                     case ADD_TEAM:
                         so = new SOAddTeam();
+                        break;
+                    case DELETE_TEAM:
+                        so = new SODeleteTeam();
                         break;
                     case SEARCH_HALLS:
                         so = new SOSearchHalls();
@@ -153,15 +159,18 @@ public class ClientThread extends Thread {
                     case UPDATE_TEAM:
                         so = new SOUpdateTeam();
                         break;
+                    case LOGOUT:
+                        so = new SOLogout();
+                        break;
                     case QUIT:
+                        so = new SOQuit();
                         status = false;
                         terminate();
                         break;
                 }
-                if(status){
-                    Response response = so.execute(request.getObject());
+                Response response = so.execute(request.getObject());
+                if(status)
                     out.writeObject(response);
-                }
             } catch (IOException ex) {
                 status = false;
                 terminate();

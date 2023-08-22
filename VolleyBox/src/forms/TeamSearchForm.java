@@ -129,6 +129,8 @@ public class TeamSearchForm extends javax.swing.JDialog {
         TeamTableModel ttm = (TeamTableModel) tblTeams.getModel();
         Team team = ttm.getTeam(row);
         new TeamInfoForm(this, true, team).setVisible(true);
+        List<Team> teams = Communication.getInstance().getAllTeams();
+        tblTeams.setModel(new TeamTableModel(teams));
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
