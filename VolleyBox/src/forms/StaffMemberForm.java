@@ -10,6 +10,7 @@ import domain.StaffMember;
 import domain.StaffMemberEngagement;
 import java.time.LocalDate;
 import java.util.List;
+import javax.swing.JOptionPane;
 import models.StaffEngagementsTableModel;
 
 /**
@@ -221,6 +222,10 @@ public class StaffMemberForm extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        if (txtFirstname.getText().isEmpty() || txtLastname.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Not entered all informations");
+            return;
+        }
         String firstname = txtFirstname.getText();
         String lastname = txtLastname.getText();
         int year = (int) comboYear.getSelectedItem();
@@ -234,6 +239,10 @@ public class StaffMemberForm extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateInfoActionPerformed
+        if (txtFirstname.getText().isEmpty() || txtLastname.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Not entered all informations");
+            return;
+        }
         String firstname = txtFirstname.getText();
         String lastname = txtLastname.getText();
         int year = (int) comboYear.getSelectedItem();

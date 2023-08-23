@@ -13,6 +13,7 @@ import domain.Team;
 import enumeration.PlayerPosition;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -190,13 +191,22 @@ public class AddPlayerEngagementForm extends javax.swing.JDialog implements AddE
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Season season = seasons.get(comboSeason.getSelectedIndex());
-        Roster roster = new Roster(team, season);
-        PlayerPosition playerPosition = (PlayerPosition) comboPosition.getSelectedItem();
-        int number = Integer.parseInt(txtNumber.getText());
-        PlayerEngagement playerEngagement = new PlayerEngagement(player, roster, playerPosition, number);
-        Communication.getInstance().addPlayerEngagement(playerEngagement);
-        dispose();
+        if(team == null || player == null){
+            JOptionPane.showMessageDialog(null, "Not entered all informations");
+            return;
+        }
+        try{
+            Season season = seasons.get(comboSeason.getSelectedIndex());
+            Roster roster = new Roster(team, season);
+            PlayerPosition playerPosition = (PlayerPosition) comboPosition.getSelectedItem();
+            int number = Integer.parseInt(txtNumber.getText());
+            PlayerEngagement playerEngagement = new PlayerEngagement(player, roster, playerPosition, number);
+            Communication.getInstance().addPlayerEngagement(playerEngagement);
+            dispose();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Number should be number");
+            return;
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

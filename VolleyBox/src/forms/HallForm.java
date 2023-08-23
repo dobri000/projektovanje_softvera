@@ -6,6 +6,7 @@ package forms;
 
 import communication.Communication;
 import domain.Hall;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -88,6 +89,10 @@ public class HallForm extends javax.swing.JDialog {
     private void btnAddHallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddHallActionPerformed
         String hallName = txtHallName.getText();
         String hallAddress = txtHallAddress.getText();
+        if(hallName.isEmpty() || hallAddress.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Not entered all informations");
+            return;
+        }
         Hall hall = new Hall(hallName, hallAddress);
         Communication.getInstance().addHall(hall);
         dispose();

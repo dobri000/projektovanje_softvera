@@ -14,6 +14,7 @@ import domain.Team;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import models.PlayerEngagementsTeamModel;
 import models.StaffEngagementsTeamModel;
@@ -28,7 +29,7 @@ public class TeamInfoForm extends javax.swing.JDialog {
     private List<Country> countries;
     private Hall hall;
     private List<Season> seasons;
-    
+
     /**
      * Creates new form TeamAddForm
      */
@@ -279,16 +280,25 @@ public class TeamInfoForm extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String teamName = txtTeamName.getText().trim();
-        int founded = Integer.parseInt(txtFounded.getText());
-        Country country = countries.get(comboCountry.getSelectedIndex());
-        Team team = new Team(teamName, founded, country, hall);
-        Communication.getInstance().updateTeam(team);
-        dispose();
+        if (hall == null || txtTeamName.getText().isEmpty() || txtFounded.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Not entered all informations");
+            return;
+        }
+        try {
+            String teamName = txtTeamName.getText().trim();
+            int founded = Integer.parseInt(txtFounded.getText());
+            Country country = countries.get(comboCountry.getSelectedIndex());
+            Team team = new Team(teamName, founded, country, hall);
+            Communication.getInstance().updateTeam(team);
+            dispose();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "founded should be number");
+            return;
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void comboSeasonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSeasonActionPerformed
-        
+
     }//GEN-LAST:event_comboSeasonActionPerformed
 
     private void btnAddPlayerEngagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPlayerEngagementActionPerformed
@@ -302,8 +312,9 @@ public class TeamInfoForm extends javax.swing.JDialog {
 
     private void btnDeletePlayerEngagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletePlayerEngagementActionPerformed
         int row = tblPlayers.getSelectedRow();
-        if(row == -1)
+        if (row == -1) {
             return;
+        }
         PlayerEngagementsTeamModel petm = (PlayerEngagementsTeamModel) tblPlayers.getModel();
         PlayerEngagement engagement = petm.getEngagement(row);
         Communication.getInstance().deletePlayerEngagement(engagement);
@@ -321,8 +332,9 @@ public class TeamInfoForm extends javax.swing.JDialog {
 
     private void btnDeleteStaffEngagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteStaffEngagementActionPerformed
         int row = tblStaff.getSelectedRow();
-        if(row == -1)
+        if (row == -1) {
             return;
+        }
         StaffEngagementsTeamModel setm = (StaffEngagementsTeamModel) tblStaff.getModel();
         StaffMemberEngagement engagement = setm.getEngagement(row);
         Communication.getInstance().deleteStaffMemberEngagement(engagement);
@@ -337,7 +349,6 @@ public class TeamInfoForm extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddPlayerEngagement;
@@ -365,17 +376,17 @@ public class TeamInfoForm extends javax.swing.JDialog {
 
     private void setComboBox() {
         countries = Communication.getInstance().getAllCountries();
-        for(Country country : countries){
+        for (Country country : countries) {
             comboCountry.addItem(country.getCountryName());
         }
-        for(Season season : seasons){
+        for (Season season : seasons) {
             comboSeason.addItem(season.toString());
         }
         comboSeason.setSelectedIndex(seasons.size() - 1);
         comboSeason.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange() == ItemEvent.SELECTED) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
                     Season season = seasons.get(comboSeason.getSelectedIndex());
                     PlayerEngagementsTeamModel petm = (PlayerEngagementsTeamModel) tblPlayers.getModel();
                     petm.showSeason(season);
@@ -383,7 +394,7 @@ public class TeamInfoForm extends javax.swing.JDialog {
                     setm.showSeason(season);
                 }
             }
-            
+
         });
     }
 
@@ -409,5 +420,5 @@ public class TeamInfoForm extends javax.swing.JDialog {
         setm.showSeason(seasons.get(seasons.size() - 1));
         tblStaff.setModel(setm);
     }
-    
+
 }

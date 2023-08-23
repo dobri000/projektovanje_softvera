@@ -12,6 +12,7 @@ import enumeration.Hand;
 import java.time.LocalDate;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import models.PlayerEngagementsTableModel;
 
 /**
@@ -22,7 +23,7 @@ public class PlayerForm extends javax.swing.JDialog {
 
     private List<Country> countries;
     private Player player = null;
-    
+
     /**
      * Creates new form PlayerAddForm
      */
@@ -33,8 +34,8 @@ public class PlayerForm extends javax.swing.JDialog {
         btnUpdateInfo.setVisible(false);
         setFieldsEnabled(false);
     }
-    
-    public PlayerForm(java.awt.Frame parent, boolean modal, Player player){
+
+    public PlayerForm(java.awt.Frame parent, boolean modal, Player player) {
         super(parent, modal);
         initComponents();
         setComboBoxes();
@@ -281,45 +282,65 @@ public class PlayerForm extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        String firstname = txtFirstname.getText();
-        String lastname = txtLastname.getText();
-        int year = (int) comboYear.getSelectedItem();
-        int month = (int) comboMonth.getSelectedItem();
-        int day = (int) comboDay.getSelectedItem();
-        LocalDate birthdate = LocalDate.of(year, month, day);
-        int height = Integer.parseInt(txtHeight.getText());
-        int weight = Integer.parseInt(txtWeight.getText());
-        int spike = Integer.parseInt(txtSpike.getText());
-        int block = Integer.parseInt(txtBlock.getText());
-        Hand dominantHand = (Hand) comboHand.getSelectedItem();
-        Country nationality = countries.get(comboNationality.getSelectedIndex());
-        Player player = new Player(firstname, lastname, birthdate, height, weight, spike, block, dominantHand, nationality);
-        Communication.getInstance().addPlayer(player);
-        this.dispose();
+        if (txtFirstname.getText().isEmpty() || txtLastname.getText().isEmpty() || txtHeight.getText().isEmpty() || txtWeight.getText().isEmpty() || txtSpike.getText().isEmpty() || txtBlock.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Not entered all informations");
+            return;
+        }
+        try {
+            String firstname = txtFirstname.getText();
+            String lastname = txtLastname.getText();
+            int year = (int) comboYear.getSelectedItem();
+            int month = (int) comboMonth.getSelectedItem();
+            int day = (int) comboDay.getSelectedItem();
+            LocalDate birthdate = LocalDate.of(year, month, day);
+            int height = Integer.parseInt(txtHeight.getText());
+            int weight = Integer.parseInt(txtWeight.getText());
+            int spike = Integer.parseInt(txtSpike.getText());
+            int block = Integer.parseInt(txtBlock.getText());
+            Hand dominantHand = (Hand) comboHand.getSelectedItem();
+            Country nationality = countries.get(comboNationality.getSelectedIndex());
+            Player player = new Player(firstname, lastname, birthdate, height, weight, spike, block, dominantHand, nationality);
+            Communication.getInstance().addPlayer(player);
+            this.dispose();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Height, weight, spike and block are numbers");
+            return;
+        }
+
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateInfoActionPerformed
-        String firstname = txtFirstname.getText();
-        String lastname = txtLastname.getText();
-        int year = (int) comboYear.getSelectedItem();
-        int month = (int) comboMonth.getSelectedItem();
-        int day = (int) comboDay.getSelectedItem();
-        LocalDate birthdate = LocalDate.of(year, month, day);
-        int height = Integer.parseInt(txtHeight.getText());
-        int weight = Integer.parseInt(txtWeight.getText());
-        int spike = Integer.parseInt(txtSpike.getText());
-        int block = Integer.parseInt(txtBlock.getText());
-        Hand dominantHand = (Hand) comboHand.getSelectedItem();
-        Country nationality = countries.get(comboNationality.getSelectedIndex());
-        Player player = new Player(this.player.getPlayerId(), firstname, lastname, birthdate, height, weight, spike, block, dominantHand, nationality);
-        Communication.getInstance().updatePlayer(player);
-        this.dispose();
+        if (txtFirstname.getText().isEmpty() || txtLastname.getText().isEmpty() || txtHeight.getText().isEmpty() || txtWeight.getText().isEmpty() || txtSpike.getText().isEmpty() || txtBlock.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Not entered all informations");
+            return;
+        }
+        try {
+            String firstname = txtFirstname.getText();
+            String lastname = txtLastname.getText();
+            int year = (int) comboYear.getSelectedItem();
+            int month = (int) comboMonth.getSelectedItem();
+            int day = (int) comboDay.getSelectedItem();
+            LocalDate birthdate = LocalDate.of(year, month, day);
+            int height = Integer.parseInt(txtHeight.getText());
+            int weight = Integer.parseInt(txtWeight.getText());
+            int spike = Integer.parseInt(txtSpike.getText());
+            int block = Integer.parseInt(txtBlock.getText());
+            Hand dominantHand = (Hand) comboHand.getSelectedItem();
+            Country nationality = countries.get(comboNationality.getSelectedIndex());
+            Player player = new Player(this.player.getPlayerId(), firstname, lastname, birthdate, height, weight, spike, block, dominantHand, nationality);
+            Communication.getInstance().updatePlayer(player);
+            this.dispose();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Height, weight, spike and block are numbers");
+            return;
+        }
     }//GEN-LAST:event_btnUpdateInfoActionPerformed
 
     private void btnDeleteEngActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteEngActionPerformed
         int row = tblEngagements.getSelectedRow();
-        if(row == -1)
+        if (row == -1) {
             return;
+        }
         PlayerEngagementsTableModel etm = (PlayerEngagementsTableModel) tblEngagements.getModel();
         PlayerEngagement engagement = etm.getEngagement(row);
         etm.removeEngagement(row);
@@ -340,7 +361,6 @@ public class PlayerForm extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -373,18 +393,18 @@ public class PlayerForm extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void setComboBoxes() {
-        for(int i = 1; i <= 31; i++){
+        for (int i = 1; i <= 31; i++) {
             comboDay.addItem(i);
         }
-        for(int i = 1; i <= 12; i++){
+        for (int i = 1; i <= 12; i++) {
             comboMonth.addItem(i);
         }
-        for(int i = 1970; i <= 2010; i++){
+        for (int i = 1970; i <= 2010; i++) {
             comboYear.addItem(i);
         }
         comboHand.setModel(new DefaultComboBoxModel<>(Hand.values()));
         countries = Communication.getInstance().getAllCountries();
-        for(Country country : countries){
+        for (Country country : countries) {
             comboNationality.addItem(country.getCountryName());
         }
     }

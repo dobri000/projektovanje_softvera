@@ -9,6 +9,7 @@ import domain.Country;
 import domain.Hall;
 import domain.Team;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -130,12 +131,21 @@ public class TeamAddForm extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(hall == null || txtTeamName.getText().isEmpty() || txtFounded.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Not entered all informations");
+            return;
+        }
+        try{
         String teamName = txtTeamName.getText().trim();
         int founded = Integer.parseInt(txtFounded.getText());
         Country country = countries.get(comboCountry.getSelectedIndex());
         Team team = new Team(teamName, founded, country, hall);
         Communication.getInstance().addTeam(team);
         dispose();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "founded should be number");
+            return;
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

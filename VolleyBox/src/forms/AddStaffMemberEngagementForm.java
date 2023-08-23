@@ -13,6 +13,7 @@ import domain.Team;
 import enumeration.StaffMemberPosition;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -186,6 +187,10 @@ public class AddStaffMemberEngagementForm extends javax.swing.JDialog implements
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        if(team == null || staffMember == null){
+            JOptionPane.showMessageDialog(null, "Not entered all informations");
+            return;
+        }
         Season season = seasons.get(comboSeason.getSelectedIndex());
         Roster roster = new Roster(team, season);
         StaffMemberPosition position = (StaffMemberPosition) comboPosition.getSelectedItem();
