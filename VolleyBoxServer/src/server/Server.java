@@ -4,6 +4,7 @@
  */
 package server;
 
+import database.DBBroker;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -25,10 +26,10 @@ public class Server {
 
     public Server() throws IOException {
         ss = new ServerSocket(6666);
-        clients = new ArrayList<>();
     }
 
     public void start() throws IOException {
+        clients = new ArrayList<>();
         while (true) {
             Socket socket = ss.accept();
             ClientThread ct = null;
@@ -46,10 +47,11 @@ public class Server {
 
     public void stop() throws IOException {
         for (ClientThread client : clients) {
-            client.terminate();
+            client.serverStop();
             client.interrupt();
         }
         ss.close();
+        DBBroker.getInstance().emptyList();
     }
 
     public static void removeClient(ClientThread client) {

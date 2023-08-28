@@ -4,46 +4,47 @@
  */
 package threads;
 
-import so.impl.SOUpdateStaffMember;
-import so.impl.SOGetAllPlayers;
-import so.impl.SOAddHall;
-import so.impl.SOLogin;
-import so.impl.SOGetStaffMemberEngagements;
-import so.impl.SOAddTeam;
-import so.impl.SOGetStaffMemberEngagementsOfTeam;
-import so.impl.SOUpdatePlayer;
-import so.impl.SOSearchTeams;
-import so.impl.SOAddPlayer;
-import so.impl.SOGetPlayerEngagementsOfTeam;
-import so.impl.SOGetAllCountries;
-import so.impl.SOGetPlayerEngagements;
-import so.impl.SOGetAllSeasons;
-import so.impl.SODeleteStaffMember;
-import so.impl.SOAddPlayerEngagement;
-import so.impl.SOUpdateTeam;
-import so.impl.SODeleteStaffMemberEngagement;
-import so.impl.SOSearchHalls;
-import so.impl.SODeletePlayerEngagement;
-import so.impl.SOAddStaffMemberEngagement;
-import so.impl.SOAddStaffMember;
-import so.impl.SOGetAllTeams;
-import so.impl.SODeletePlayer;
-import so.impl.SOGetAllHalls;
-import so.impl.SOSearchStaffMembers;
-import so.impl.SOSearchPlayers;
-import so.impl.SOGetAllStaffMembers;
-import enumeration.Operation;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import enumeration.Operation;
 import server.Server;
-import so.*;
+import so.SOInterface;
+import so.impl.SOAddHall;
+import so.impl.SOAddPlayer;
+import so.impl.SOAddPlayerEngagement;
+import so.impl.SOAddStaffMember;
+import so.impl.SOAddStaffMemberEngagement;
+import so.impl.SOAddTeam;
+import so.impl.SODeletePlayer;
+import so.impl.SODeletePlayerEngagement;
+import so.impl.SODeleteStaffMember;
+import so.impl.SODeleteStaffMemberEngagement;
 import so.impl.SODeleteTeam;
+import so.impl.SOGetAllCountries;
+import so.impl.SOGetAllHalls;
+import so.impl.SOGetAllPlayers;
+import so.impl.SOGetAllSeasons;
+import so.impl.SOGetAllStaffMembers;
+import so.impl.SOGetAllTeams;
+import so.impl.SOGetPlayerEngagements;
+import so.impl.SOGetPlayerEngagementsOfTeam;
+import so.impl.SOGetStaffMemberEngagements;
+import so.impl.SOGetStaffMemberEngagementsOfTeam;
+import so.impl.SOLogin;
 import so.impl.SOLogout;
 import so.impl.SOQuit;
+import so.impl.SOSearchHalls;
+import so.impl.SOSearchPlayers;
+import so.impl.SOSearchStaffMembers;
+import so.impl.SOSearchTeams;
+import so.impl.SOUpdatePlayer;
+import so.impl.SOUpdateStaffMember;
+import so.impl.SOUpdateTeam;
 import transfer.Request;
 import transfer.Response;
 
@@ -169,8 +170,9 @@ public class ClientThread extends Thread {
                         break;
                 }
                 Response response = so.execute(request.getObject());
-                if(status)
+                if (status) {
                     out.writeObject(response);
+                }
             } catch (IOException ex) {
                 status = false;
                 terminate();
@@ -188,6 +190,16 @@ public class ClientThread extends Thread {
             out.close();
             socket.close();
             Server.removeClient(this);
+        } catch (IOException ex) {
+            Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void serverStop() {
+        try {
+            in.close();
+            out.close();
+            socket.close();
         } catch (IOException ex) {
             Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -1040,4 +1040,8 @@ public class DBBroker {
         return true;
     }
     
+    public void emptyList() {
+        loggedAdmins.clear();
+    }
+    
 }
